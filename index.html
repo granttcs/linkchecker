@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html >
+
+  <body style="text-size: 20px; font-family: arial, sans-serif; line-height: 1.5em; padding:50px;">
+
+    Lorem ipsum dolor sit amet, <a href="acorns">aconsectetur</a> adipisicing elit. <a href="panther.html">Dignissimos</a>Dignissimos culpa omnis sit fuga. Rerum quaerat amet sequi eos aexpedita, vel distinctio laboriosam rem aperiam corrupti dolorem quia asperiores, odio illo beatae assumenda ipsa! Nostrum <a href="chameleon/index.html">temporibus</a>temporibus, obcaecati minima quaerat laudantium nisi, facere placeat odio nesciunt sit mollitia ea. Qui necessitatibus laudantium voluptatum vel in amet expedita illum modi ipsum ea vero eveniet fugiat sint consequuntur temporibus commodi recusandae dolore dolorum voluptate suscipit ab, consequatur esse odio facere. Nulla possimus, facere necessitatibus.
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
+
+  </body>
+</html>
+
+<script>
+
+
+var debug = true;
+
+var linksArray = [];
+var statusArray = {};
+
+$('body a').each(function(){
+  var ref = $(this).attr('href');
+  linksArray.push(ref);
+});
+
+if (debug) {
+  console.log('LINKS ARRAY');
+  console.log(linksArray);
+}
+
+linksArray.forEach(function(value, key) {
+
+  var status;
+
+  $.ajax({
+    url: value,
+    type: 'get',
+    method: 'get',
+  }).done(function(xhr, data, status){
+
+    if (debug) {
+      debugRequest(xhr, data, status);
+    }
+
+    status = status.status;
+    colorLinks(status, key);
+  }).fail(function(xhr, data, status){
+
+    if (debug) {
+      debugRequest(xhr, data, status);
+    }
+
+    status = xhr.status;
+    colorLinks(status, key);
+  });
+
+})
+
+function colorLinks(status, key) {
+
+  if (debug) {
+    alert(status);
+    alert(key);
+  }
+
+  if (status == '200') {
+    $('a:eq('+key+')').css('color', 'green');
+  } else if(status == '404') {
+    $('a:eq('+key+')').css('color', 'red');
+
+  }
+}
+
+function debugRequest(xhr, data, status){
+  console.log('xhr:');
+  console.log(xhr);
+  console.log('data:');
+  console.log(data);
+  console.log('status:');
+  console.log(status);
+  console.log('xhr.status >>>>>');
+  console.log(xhr.status);
+  console.log('<<< xhr.status');
+}
+
+
+console.log(statusArray);
+
+
+//angular.forEach()
+
+
+</script>
